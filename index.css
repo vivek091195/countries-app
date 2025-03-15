@@ -1,0 +1,80 @@
+:root {
+    --primary-bg-color: #F2F2F2;
+    --primary-text-color: #111517;
+    --primary-header-color: #FFFFFF;
+    --primary-box-shadow-color: #c9c6c6;
+}
+
+.dark-theme {
+    --primary-bg-color: #202C36;
+    --primary-text-color: #ffffff;
+    --primary-header-color: #2B3844;
+    --primary-box-shadow-color: #202C36;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Nunito Sans";
+}
+
+header {
+    position: sticky;
+    height: 5rem;
+    background-color: var(--primary-header-color);
+    padding: 1rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.app-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-text-color);
+}
+
+#theme-switcher {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--primary-text-color);
+    cursor: pointer;
+}
+
+#theme-switcher > img {
+    margin-right: 0.5rem;
+}
+
+.content {
+    padding: 2rem 4rem;
+    height: 100vh;
+    background-color: var(--primary-bg-color);
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+#country-search {
+    text-decoration: none;
+    border: none;
+    background-color: var(--primary-header-color);
+    color: var(--primary-text-color);
+    padding: 1rem;
+    box-shadow: 1px 1px 4px 0 var(--primary-box-shadow-color);
+    width: 24%;
+}
+
+#region-dropdown {
+    padding: 1rem;
+    width: 12%;
+    border: none;
+    box-shadow: 0 2px 9px 0 var(--primary-box-shadow-color);
+    border-radius: 0.25rem;
+    color: var(--primary-text-color);
+    background-color: var(--primary-header-color);
+}
