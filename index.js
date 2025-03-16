@@ -16794,6 +16794,8 @@ const data = [
   },
 ];
 
+let filteredData = data;
+
 let regions = [];
 
 function extractRegions(countriesData) {
@@ -16915,6 +16917,57 @@ function createCountryDetail(titleText) {
   return countryDetail;
 }
 
+function onSearchHandler(event) {
+  const text = event.target.value;
+
+  filteredData = data.filter((countryData) =>
+    countryData.name.toLowerCase().includes(text.toLowerCase())
+  );
+
+  startIndex = 0;
+  const countryList = document.getElementById("country-list");
+  const countryCards = Array.from(
+    countryList.querySelectorAll(".country-card")
+  );
+  countryCards.forEach((card) => (card.style.display = "none"));
+
+  for (let counter = 0; counter < MAX_VISIBLE_COUNTRIES; counter++) {
+    const countryData = filteredData[startIndex + counter];
+    const currentCard = countryCards[startIndex + counter];
+
+    if (!countryData || counter >= filteredData.length) {
+      continue;
+    }
+
+    currentCard.style.display = "flex";
+    updateCountryCard(currentCard, countryData);
+  }
+}
+
+function updateCountryCard(card, data) {
+  const countryFlag = card.querySelector("img");
+  const countryName = card.querySelector(".country-name");
+  const populationValue = card.querySelector(".country-detail .value");
+  const regionValue = card.querySelectorAll(".country-detail .value")[1];
+  const capitalValue = card.querySelectorAll(".country-detail .value")[2];
+
+  if (countryFlag) {
+    countryFlag.src = data.flags.svg;
+  }
+  if (countryName) {
+    countryName.textContent = data.name;
+  }
+  if (populationValue) {
+    populationValue.textContent = data.population;
+  }
+  if (regionValue) {
+    regionValue.textContent = data.region;
+  }
+  if (capitalValue) {
+    capitalValue.textContent = data.capital || "N/A";
+  }
+}
+
 function updateCountryElementsWithData() {
   const countryList = document.getElementById("country-list");
   const countryCards = Array.from(
@@ -16922,54 +16975,17 @@ function updateCountryElementsWithData() {
   );
 
   for (let counter = 0; counter < MAX_VISIBLE_COUNTRIES; counter++) {
-    const countryData = data[startIndex + counter];
+    const countryData = filteredData[startIndex + counter];
     const currentCard = countryCards[startIndex + counter];
 
-    if (!countryData) {
-      currentCard.remove();
+    currentCard.style.display = "flex";
+    if (!countryData || counter >= filteredData.length) {
+      currentCard.style.display = "none";
       continue;
     }
 
-    const countryFlag = currentCard.querySelector("img");
-    const countryName = currentCard.querySelector(".country-name");
-    const populationValue = currentCard.querySelector(".country-detail .value");
-    const regionValue = currentCard.querySelectorAll(
-      ".country-detail .value"
-    )[1];
-    const capitalValue = currentCard.querySelectorAll(
-      ".country-detail .value"
-    )[2];
-
-    if (countryFlag) {
-      countryFlag.src = countryData.flags.svg;
-    }
-    if (countryName) {
-      countryName.textContent = countryData.name;
-    }
-    if (populationValue) {
-      populationValue.textContent = countryData.population;
-    }
-    if (regionValue) {
-      regionValue.textContent = countryData.region;
-    }
-    if (capitalValue) {
-      capitalValue.textContent = countryData.capital || "N/A";
-    }
+    updateCountryCard(currentCard, countryData);
   }
-}
-
-function onCountrySearchHandler(event) {
-  const text = event.target.value;
-
-  const countryList = document.getElementById("country-list");
-  const countryCards = Array.from(
-    countryList.querySelectorAll(".country-card")
-  );
-
-  countryCards.filter((card) => {
-    const countryName = card.querySelector("country-name");
-    return countryName.toLowerCase().includes(text.toLowerCase());
-  });
 }
 
 function initialise() {
@@ -16984,11 +17000,15 @@ function initialise() {
 
     if (scrollPosition + viewportHeight >= totalHeight - 50) {
       startIndex += 16;
-      if (startIndex < data.length) {
+      if (startIndex < filteredData.length) {
         createCountryElements();
       }
     }
   });
+
+  document
+    .getElementById("country-search")
+    .addEventListener("input", onSearchHandler);
 
   formulateCountriesDropdown();
   createCountryElements();
