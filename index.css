@@ -70,14 +70,25 @@ header {
 }
 
 #region-dropdown {
-    padding: 1rem;
+    appearance: none; 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    
     width: 12%;
+    padding: 1rem;
     border: none;
     box-shadow: 0 2px 9px 0 var(--primary-box-shadow-color);
     border-radius: 0.25rem;
     color: var(--primary-text-color);
     background-color: var(--primary-header-color);
+    cursor: pointer;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"><path fill="black" d="M7 10l5 5 5-5H7z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+    padding-right: 30px;
 }
+  
 
 .country-list {
     display: flex;
@@ -122,4 +133,31 @@ header {
     font-size: 0.875rem;
     color: var(--primary-text-color);
     margin-left: 0.25rem;
+}
+
+@media (max-width: 768px) {
+    header {
+        padding: 0.5rem 1rem;
+    }
+    .app-title {
+        font-size: 0.875rem;
+        white-space: nowrap;
+    }
+    #theme-mode {
+        font-size: 0.75rem;
+    }
+    .content {
+        padding: 0.5rem 1rem;
+    }
+    .actions {
+        display: flex;
+        flex-direction: column;
+    }
+    .actions #country-search, #region-dropdown {
+        width: 100%;
+        margin: 0.5rem 0;
+    }
+    .country-list {
+        gap: 2rem;
+    }
 }

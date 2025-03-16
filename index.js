@@ -16944,6 +16944,33 @@ function onSearchHandler(event) {
   }
 }
 
+function onDropdownChangeHandler(event) {
+  const dropdownRegion = event.target.value;
+
+  filteredData = data.filter((countryData) =>
+    countryData.region.toLowerCase().includes(dropdownRegion.toLowerCase())
+  );
+
+  startIndex = 0;
+  const countryList = document.getElementById("country-list");
+  const countryCards = Array.from(
+    countryList.querySelectorAll(".country-card")
+  );
+  countryCards.forEach((card) => (card.style.display = "none"));
+
+  for (let counter = 0; counter < MAX_VISIBLE_COUNTRIES; counter++) {
+    const countryData = filteredData[startIndex + counter];
+    const currentCard = countryCards[startIndex + counter];
+
+    if (!countryData || counter >= filteredData.length) {
+      continue;
+    }
+
+    currentCard.style.display = "flex";
+    updateCountryCard(currentCard, countryData);
+  }
+}
+
 function updateCountryCard(card, data) {
   const countryFlag = card.querySelector("img");
   const countryName = card.querySelector(".country-name");
@@ -17009,6 +17036,10 @@ function initialise() {
   document
     .getElementById("country-search")
     .addEventListener("input", onSearchHandler);
+
+  document
+    .getElementById("region-dropdown")
+    .addEventListener("change", onDropdownChangeHandler);
 
   formulateCountriesDropdown();
   createCountryElements();
